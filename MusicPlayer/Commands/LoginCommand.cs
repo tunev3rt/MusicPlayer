@@ -1,4 +1,5 @@
-﻿using MusicPlayer.ViewModels;
+﻿using MusicPlayer.Authentication;
+using MusicPlayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,18 @@ namespace MusicPlayer.Commands
         }
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            if (parameter is UserViewModel uvm)
+            {
+                bool LoggedIn = LoginHandler.Login(uvm.Username, uvm.Password);
+                if (LoggedIn)
+                {
+                    // Navigate to the next page
+                }
+                else
+                {
+                    // Show an error message
+                }
+            }
         }
     }
 }

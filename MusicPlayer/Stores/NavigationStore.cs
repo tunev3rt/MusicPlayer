@@ -11,6 +11,7 @@ namespace MusicPlayer.Stores
     {
         private BaseViewModel _currentViewModel;
 
+
         public BaseViewModel CurrentViewModel
         {
             get { return _currentViewModel; }

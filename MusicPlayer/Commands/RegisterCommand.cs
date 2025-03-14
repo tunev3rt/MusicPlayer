@@ -1,6 +1,5 @@
 ﻿using MusicPlayer.Authentication;
 using MusicPlayer.Services;
-using MusicPlayer.Stores;
 using MusicPlayer.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,13 +7,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
+using System.Windows;
 
 namespace MusicPlayer.Commands
 {
-    public class LoginCommand : ICommand
+    class RegisterCommand : ICommand
     {
         private readonly Services.NavigationService navigationService;
 
@@ -26,7 +24,7 @@ namespace MusicPlayer.Commands
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public LoginCommand(Services.NavigationService navigationService, UserService user)
+        public RegisterCommand(Services.NavigationService navigationService, UserService user)
         {
             this.navigationService = navigationService;
             this.user = user;
@@ -45,7 +43,7 @@ namespace MusicPlayer.Commands
         {
             if (parameter is LoginViewModel lvm)
             {
-                bool LoggedIn = LoginHandler.Login(lvm.Username, lvm.Password);
+                bool LoggedIn = user.Register(lvm.Username, lvm.Password);
                 if (LoggedIn)
                 {
                     user.Username = lvm.Username;

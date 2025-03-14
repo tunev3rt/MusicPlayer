@@ -14,12 +14,11 @@ public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        UserService userService = new UserService();
-
         NavigationStore navigationStore = new NavigationStore();
 
-        navigationStore.CurrentViewModel = new LoginViewModel(navigationStore, userService);
+        UserService userService = new UserService();
 
+        navigationStore.CurrentViewModel = new LoginViewModel(navigationStore, userService);
 
         MainWindow = new MainWindow()
         {

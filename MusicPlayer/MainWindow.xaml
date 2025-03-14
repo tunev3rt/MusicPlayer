@@ -14,6 +14,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
                     <views:LoginView />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                    <views:HomeWindow />
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 

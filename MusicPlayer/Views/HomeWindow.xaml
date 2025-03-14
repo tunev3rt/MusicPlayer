@@ -5,10 +5,45 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicPlayer.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920" xmlns:viewmodels="clr-namespace:MusicPlayer.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}">
+             d:DesignHeight="1080" d:DesignWidth="1920" xmlns:viewmodels="clr-namespace:MusicPlayer.ViewModels" d:DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-        <Label Content="HOME WINDOW" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="80"/>
-        <Label Content="{Binding User.Username}" HorizontalAlignment="Center" Margin="0,680,0,0" VerticalAlignment="Top" FontSize="80"/>
+        <!-- Define the Sidebar and Main Content Area -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <!-- Sidebar width -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content area -->
+        </Grid.ColumnDefinitions>
 
+        <!-- Sidebar (ListBox for playlists) -->
+        <StackPanel Grid.Column="0" Background="#333">
+            <TextBlock Text="Playlists" Foreground="White" FontSize="18" Margin="10,10,10,20"/>
+            <ListBox ItemsSource="{Binding Playlists}" DisplayMemberPath="PlaylistName" Background="#444" Foreground="White" BorderBrush="Transparent" BorderThickness="0">
+            </ListBox>
+        </StackPanel>
+
+        <!-- Main Content Area -->
+        <ContentControl Name="MainContent" Grid.Column="1" Margin="20,20,20,100">
+            <ContentControl.Content>
+                <DataTemplate>
+                    <StackPanel>
+                        <!-- Bind Songs to display the selected playlist songs -->
+                        <ListBox ItemsSource="{Binding Songs}" DisplayMemberPath="Title"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentControl.Content>
+        </ContentControl>
+
+        <!-- Controls at the bottom (Play/Pause, Track Length, Volume) -->
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="#222" VerticalAlignment="Bottom" Height="100">
+            <!-- Play/Pause Button -->
+            <Button Content="{Binding PlayPauseButtonContent}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Width="75" Command="{Binding PlayPauseCommand}"/>
+
+            <!-- Track Length Slider -->
+            <Slider Minimum="0" Maximum="{Binding TrackLength}" Value="{Binding TrackPosition}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500"/>
+
+            <!-- Volume Slider -->
+            <Slider Minimum="0" Maximum="100" Value="{Binding Volume}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200"/>
+        </Grid>
     </Grid>
 </UserControl>

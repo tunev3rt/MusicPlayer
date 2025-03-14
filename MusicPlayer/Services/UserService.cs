@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using MusicPlayer.Model;
 
 namespace MusicPlayer.Services
 {
@@ -32,6 +33,16 @@ namespace MusicPlayer.Services
         public bool Register(string username, string password)
         {
             return _userRepo.Register(username, password);
+        }
+
+        public List<Song> GetAllSongs()
+        {
+            return _userRepo.GetAllSongs();
+        }
+
+        public List<Playlist> GetPlaylistsForUser()
+        {
+            return _userRepo.GetPlaylistsForUser(Username);
         }
     }
 }

@@ -11,11 +11,7 @@ namespace MusicPlayer.ViewModels
 {
     public class HomeViewModel : BaseViewModel
     {
-        public readonly UserViewModel uvm;
-
         public UserService User { get; set; }
-
-        public string Username { get; set; }
 
         public HomeViewModel(NavigationStore navigationStore, UserService user)
         {

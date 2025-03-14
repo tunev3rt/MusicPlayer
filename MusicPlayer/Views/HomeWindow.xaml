@@ -7,43 +7,75 @@
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920" xmlns:viewmodels="clr-namespace:MusicPlayer.ViewModels" d:DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-        <!-- Define the Sidebar and Main Content Area -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
-            <!-- Sidebar width -->
             <ColumnDefinition Width="*"/>
-            <!-- Main content area -->
         </Grid.ColumnDefinitions>
 
-        <!-- Sidebar (ListBox for playlists) -->
         <StackPanel Grid.Column="0" Background="#333">
             <TextBlock Text="Playlists" Foreground="White" FontSize="18" Margin="10,10,10,20"/>
-            <ListBox ItemsSource="{Binding Playlists}" DisplayMemberPath="PlaylistName" Background="#444" Foreground="White" BorderBrush="Transparent" BorderThickness="0">
+
+            <Button Content="Add Playlist" HorizontalAlignment="Stretch" VerticalAlignment="Top" Command="{Binding AddPlaylistCommand}" CommandParameter="{Binding}" Margin="10" Background="#555" Foreground="White"/>
+
+            <ListBox ItemsSource="{Binding Playlists}" DisplayMemberPath="PlaylistName" Background="#444" Foreground="White" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}">
             </ListBox>
         </StackPanel>
 
-        <!-- Main Content Area -->
-        <ContentControl Name="MainContent" Grid.Column="1" Margin="20,20,20,100">
-            <ContentControl.Content>
+        <ContentControl Grid.Column="1" Margin="20,20,20,100" Content="{Binding SelectedPlaylist}">
+            <ContentControl.ContentTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <!-- Bind Songs to display the selected playlist songs -->
-                        <ListBox ItemsSource="{Binding Songs}" DisplayMemberPath="Title"/>
+                        <TextBlock Text="{Binding PlaylistName}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <ListBox ItemsSource="{Binding DataContext.Songs, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                 DisplayMemberPath="Title"/>
                     </StackPanel>
                 </DataTemplate>
-            </ContentControl.Content>
+            </ContentControl.ContentTemplate>
         </ContentControl>
 
-        <!-- Controls at the bottom (Play/Pause, Track Length, Volume) -->
         <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="#222" VerticalAlignment="Bottom" Height="100">
-            <!-- Play/Pause Button -->
             <Button Content="{Binding PlayPauseButtonContent}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Width="75" Command="{Binding PlayPauseCommand}"/>
 
-            <!-- Track Length Slider -->
             <Slider Minimum="0" Maximum="{Binding TrackLength}" Value="{Binding TrackPosition}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500"/>
 
-            <!-- Volume Slider -->
             <Slider Minimum="0" Maximum="100" Value="{Binding Volume}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200"/>
         </Grid>
+        <Button Content="Logout"
+            VerticalAlignment="Top"
+            Margin="0,9,20,0"
+            Width="120"
+            Height="40"
+            FontSize="16"
+            FontWeight="Bold"
+            Foreground="White"
+            Background="#FF3B3B"
+            BorderBrush="#FF2D2D"
+            BorderThickness="2"
+            Command="{Binding LogoutCommand}" CommandParameter="{Binding}" Grid.Column="1">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <!-- Normal state style -->
+                    <Setter Property="Background" Value="#FF3B3B"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderBrush" Value="#FF2D2D"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Width" Value="120"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Margin" Value="0,0,20,0"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+
+                    <!-- Mouse Hover effect -->
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF2A2A"/>
+                            <Setter Property="BorderBrush" Value="#FF1E1E"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </UserControl>

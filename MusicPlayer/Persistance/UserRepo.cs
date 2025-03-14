@@ -92,16 +92,17 @@ namespace MusicPlayer.Persistance
             }
         }
 
-        public void CreatePlaylist(string username, string playlistName)
+        public void CreatePlaylist(string username, Playlist playlist)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("INSERT INTO Playlists (PlaylistName, Username) VALUES (@PlaylistName, @Username)", con))
                 {
-                    cmd.Parameters.Add("@PlaylistName", SqlDbType.NVarChar).Value = playlistName;
+                    cmd.Parameters.Add("@PlaylistName", SqlDbType.NVarChar).Value = playlist.PlaylistName;
                     cmd.Parameters.Add("@Username", SqlDbType.NVarChar).Value = username;
-                    cmd.ExecuteNonQuery();
+                    playlist.DateCreated = DateTime.Now;
+                    playlist.PlaylistID = Convert.ToInt32(cmd.ExecuteScalar());
                 }
             }
         }

@@ -28,7 +28,15 @@ namespace MusicPlayer.Commands
 
         public bool CanExecute(object? parameter)
         {
-            return true;
+            bool canExecute = false;
+            if (parameter is SongSelectionViewModel ssv)
+            {
+                if (ssv.SelectedSong != null && ssv.SelectedPlaylist != null)
+                {
+                    canExecute = true;
+                }
+            }
+            return canExecute;
         }
         public void Execute(object? parameter)
         {

@@ -92,10 +92,6 @@ namespace MusicPlayer.ViewModels
 
         public HomeViewModel(NavigationStore navigationStore, UserService user, MusicPlayerService musicPlayerService)
         {
-            AddPlaylistCommand = new AddPlaylistCommand(user);
-            LogoutCommand = new LogoutCommand(navigationStore);
-            AddSongToPlaylistCommand = new NavigateCommand(new NavigationService(navigationStore, () => new SongSelectionViewModel(navigationStore, user, SelectedPlaylist, musicPlayerService)), user);
-            PlayPauseCommand = new PlayPauseCommand(musicPlayerService);
 
 
             User = user;
@@ -116,6 +112,11 @@ namespace MusicPlayer.ViewModels
 
             Playlists = new ObservableCollection<Playlist>(User.GetPlaylistsForUser());
             Songs = new ObservableCollection<Song>(User.GetAllSongs());
+
+            AddPlaylistCommand = new AddPlaylistCommand(user);
+            LogoutCommand = new LogoutCommand(navigationStore, this.musicPlayerService);
+            AddSongToPlaylistCommand = new NavigateCommand(new NavigationService(navigationStore, () => new SongSelectionViewModel(navigationStore, user, SelectedPlaylist, musicPlayerService)), user);
+            PlayPauseCommand = new PlayPauseCommand(musicPlayerService);
         }
 
 

@@ -90,10 +90,10 @@ namespace MusicPlayer.ViewModels
 
         public ObservableCollection<Song> Songs { get; set; }
 
-        public HomeViewModel(NavigationStore navigationStore, UserService user, MusicPlayerService musicPlayerService)
+        public HomeViewModel(NavigationStore navigationStore, UserService user, MusicPlayerService musicPlayerService, Playlist selectedPlaylist = null)
         {
 
-
+            SelectedPlaylist = selectedPlaylist;
             User = user;
             this.musicPlayerService = musicPlayerService;
             this.musicPlayerService.PropertyChanged += (sender, args) =>

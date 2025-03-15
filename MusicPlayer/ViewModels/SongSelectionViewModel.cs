@@ -50,7 +50,7 @@ namespace MusicPlayer.ViewModels
             this.user = user;
             SelectedPlaylist = playlist;
             this.musicPlayerService = musicPlayerService;
-            ReturnToHomeViewCommand = new NavigateCommand(new Services.NavigationService(navigationStore, () => new HomeViewModel(navigationStore, user, this.musicPlayerService)), user);
+            ReturnToHomeViewCommand = new NavigateCommand(new Services.NavigationService(navigationStore, () => new HomeViewModel(navigationStore, user, this.musicPlayerService, SelectedPlaylist)), user);
             Songs = new ObservableCollection<Song>(user.GetAllSongs());
             AddSongToPlaylistCommand = new AddSongToPlaylistCommand(user);
 

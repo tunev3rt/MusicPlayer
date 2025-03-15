@@ -14,11 +14,16 @@ namespace MusicPlayer.Services
     {
         private readonly MediaPlayer mediaPlayer;
         private readonly DispatcherTimer positionTimer;
+
+        private double trackPosition;
+        private double trackLength;
+        private bool isPlaying;
+        private string isPlayingText;
+
         public Song CurrentSong { get; private set; }
         public event Action SongEnded;
         public event Action<double> OnTrackLengthUpdated;
 
-        private double trackLength;
         public double TrackLength
         {
             get => trackLength;
@@ -31,8 +36,6 @@ namespace MusicPlayer.Services
                 }
             }
         }
-
-        private double trackPosition;
         public double TrackPosition
         {
             get => trackPosition;
@@ -53,8 +56,6 @@ namespace MusicPlayer.Services
             set => mediaPlayer.Volume = value / 100;
         }
 
-        private bool isPlaying;
-        private string isPlayingText;
 
         public bool IsPlaying
         {
@@ -88,12 +89,16 @@ namespace MusicPlayer.Services
             mediaPlayer = new MediaPlayer();
             positionTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             positionTimer.Tick += (sender, args) => TrackPosition = mediaPlayer.Position.TotalSeconds;
+
+
             mediaPlayer.MediaEnded += (sender, args) =>
             {
                 SongEnded?.Invoke();
                 TrackPosition = 0;
                 positionTimer.Stop();
             };
+
+
             mediaPlayer.MediaOpened += (sender, args) =>
             {
                 if (mediaPlayer.NaturalDuration.HasTimeSpan)

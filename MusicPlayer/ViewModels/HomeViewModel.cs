@@ -19,15 +19,24 @@ namespace MusicPlayer.ViewModels
     public class HomeViewModel : BaseViewModel
     {
 
+        // Services
+
         private readonly MusicPlayerService musicPlayerService;
+
+        // Commands
 
         public ICommand AddPlaylistCommand { get; set; }
         public ICommand LogoutCommand { get; set; }
         public ICommand AddSongToPlaylistCommand { get; set; }
         public ICommand PlayPauseCommand { get; set; }
 
+        // Fields
 
         private Playlist selectedPlaylist;
+        private Song selectedSongFromPlaylist;
+
+        // Properties
+
         public Playlist SelectedPlaylist
         {
             get => selectedPlaylist;
@@ -55,7 +64,6 @@ namespace MusicPlayer.ViewModels
             }
         }
 
-        private Song selectedSongFromPlaylist;
         public Song SelectedSongFromPlaylist
         {
             get => selectedSongFromPlaylist;

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicPlayer.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920" xmlns:viewmodels="clr-namespace:MusicPlayer.ViewModels" d:DataContext="{Binding RelativeSource={RelativeSource Self}}">
+             d:DesignHeight="1080" d:DesignWidth="1920" xmlns:viewmodels="clr-namespace:MusicPlayer.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -21,17 +21,20 @@
             </ListBox>
         </StackPanel>
 
-        <ContentControl Grid.Column="1" Margin="20,20,20,100" Content="{Binding SelectedPlaylist}">
+        <ContentControl Grid.Column="1" Margin="20,20,20,100" Content="{Binding}">
             <ContentControl.ContentTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding PlaylistName}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <ListBox ItemsSource="{Binding DataContext.Songs, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                 DisplayMemberPath="Title"/>
+                        <ListBox ItemsSource="{Binding SelectedPlaylistSongs}"
+                         DisplayMemberPath="Title" 
+                         SelectedItem="{Binding SelectedSongFromPlaylist}"/>
                     </StackPanel>
                 </DataTemplate>
             </ContentControl.ContentTemplate>
         </ContentControl>
+
+
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="#222" VerticalAlignment="Bottom" Height="100">
             <Button Content="{Binding PlayPauseButtonContent}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Width="75" Command="{Binding PlayPauseCommand}"/>
@@ -54,7 +57,6 @@
             Command="{Binding LogoutCommand}" CommandParameter="{Binding}" Grid.Column="1">
             <Button.Style>
                 <Style TargetType="Button">
-                    <!-- Normal state style -->
                     <Setter Property="Background" Value="#FF3B3B"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="BorderBrush" Value="#FF2D2D"/>
@@ -72,6 +74,41 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#FF2A2A"/>
                             <Setter Property="BorderBrush" Value="#FF1E1E"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Content="Add Song to Playlist"
+        Margin="1268,9,172,0"
+        Height="40"
+        FontSize="16"
+        FontWeight="Bold"
+        Foreground="White"
+        Background="#4CAF50"
+        BorderBrush="#388E3C"
+        BorderThickness="2"
+        Command="{Binding AddSongToPlaylistCommand}"
+        CommandParameter="{Binding}" Grid.Column="1">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <!-- Normal state style -->
+                    <Setter Property="Background" Value="#4CAF50"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderBrush" Value="#388E3C"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Margin" Value="10,10,10,0"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+
+                    <!-- Mouse Hover effect -->
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#388E3C"/>
+                            <Setter Property="BorderBrush" Value="#2C6B2F"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>

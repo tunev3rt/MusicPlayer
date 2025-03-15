@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicPlayer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,12 @@ namespace MusicPlayer.Commands
     {
         private readonly Services.NavigationService navigationService;
 
-        public NavigateCommand(Services.NavigationService navigationService)
+        private UserService user;
+
+        public NavigateCommand(Services.NavigationService navigationService, UserService user)
         {
             this.navigationService = navigationService;
+            this.user = user;
         }
 
         public event EventHandler? CanExecuteChanged;

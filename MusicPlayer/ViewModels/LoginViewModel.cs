@@ -24,8 +24,8 @@ namespace MusicPlayer.ViewModels
         public LoginViewModel(NavigationStore navigationStore, UserService user)
         {
             _user = user;
-            LoginCommand = new LoginCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, _user)), _user);
-            RegisterCommand = new RegisterCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, _user)), _user);
+            LoginCommand = new LoginCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, _user, new MusicPlayerService())), _user);
+            RegisterCommand = new RegisterCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, _user, new MusicPlayerService())), _user);
 
 
         }

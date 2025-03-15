@@ -40,7 +40,7 @@ namespace MusicPlayer.Persistance
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT Title FROM Songs", con))
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Songs", con))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -124,7 +124,7 @@ namespace MusicPlayer.Persistance
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT Songs.SongID, Title, Artist, Album, Duration, FilePath, DateAdded FROM Songs JOIN PlaylistSongs ON Songs.SongID = PlaylistSongs.SongID WHERE PlaylistID = @PlaylistID", con))
+                using (SqlCommand cmd = new SqlCommand("SELECT Songs.SongID, Title, Artist, Album, Duration, FilePath, Songs.DateAdded FROM Songs JOIN PlaylistSongs ON Songs.SongID = PlaylistSongs.SongID WHERE PlaylistID = @PlaylistID", con))
                 {
                     cmd.Parameters.Add("@PlaylistID", SqlDbType.Int).Value = playlist.PlaylistID;
                     using (SqlDataReader reader = cmd.ExecuteReader())

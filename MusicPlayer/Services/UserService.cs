@@ -49,5 +49,16 @@ namespace MusicPlayer.Services
         {
             _userRepo.CreatePlaylist(Username, playlist);
         }
+        
+        public List<Song> GetSongsFromPlaylist(Playlist playlist)
+        {
+            return _userRepo.GetSongsFromPlaylist(playlist);
+        }
+
+        public void AddSongToPlaylist(Song song, Playlist playlist)
+        {
+            _userRepo.AddSongToPlaylist(song, playlist);
+        }
+
     }
 }

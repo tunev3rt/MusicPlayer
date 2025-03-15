@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MusicPlayer.Services;
+using MusicPlayer.ViewModels;
 
 namespace MusicPlayer.Commands
 {
@@ -25,7 +26,10 @@ namespace MusicPlayer.Commands
         }
         public void Execute(object parameter)
         {
-            musicPlayerService.TogglePlayPause();
+            if (parameter is HomeViewModel hvm)
+            {
+                musicPlayerService.TogglePlayPause();
+            }
         }
     }
 }

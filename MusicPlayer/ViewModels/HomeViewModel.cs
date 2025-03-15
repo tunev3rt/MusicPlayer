@@ -3,8 +3,10 @@ using MusicPlayer.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MusicPlayer.Model;
@@ -22,6 +24,7 @@ namespace MusicPlayer.ViewModels
         public ICommand AddPlaylistCommand { get; set; }
         public ICommand LogoutCommand { get; set; }
         public ICommand AddSongToPlaylistCommand { get; set; }
+        public ICommand PlayPauseCommand { get; set; }
 
 
         private Playlist selectedPlaylist;
@@ -33,8 +36,8 @@ namespace MusicPlayer.ViewModels
                 if (selectedPlaylist != value)
                 {
                     selectedPlaylist = value;
-                    OnPropertyChanged(); // Notify that SelectedPlaylist changed
-                    OnPropertyChanged(nameof(SelectedPlaylistSongs)); // Also notify that the songs have changed
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(SelectedPlaylistSongs));
                 }
             }
         }
@@ -63,9 +66,12 @@ namespace MusicPlayer.ViewModels
                     selectedSongFromPlaylist = value;
                     if (selectedSongFromPlaylist != null)
                     {
-                        musicPlayerService.Play(selectedSongFromPlaylist);
+                        musicPlayerService.ChooseSong(value);
+                        musicPlayerService.Play();
                     }
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(TrackLength));
+                    OnPropertyChanged(nameof(TrackPosition));
                 }
             }
         }
@@ -78,18 +84,57 @@ namespace MusicPlayer.ViewModels
 
         public HomeViewModel(NavigationStore navigationStore, UserService user, MusicPlayerService musicPlayerService)
         {
-            // Set the commands
             AddPlaylistCommand = new AddPlaylistCommand(user);
             LogoutCommand = new LogoutCommand(navigationStore);
             AddSongToPlaylistCommand = new NavigateCommand(new NavigationService(navigationStore, () => new SongSelectionViewModel(navigationStore, user, SelectedPlaylist, musicPlayerService)), user);
+            PlayPauseCommand = new PlayPauseCommand(musicPlayerService);
 
-            // Set the user and music player service
+
             User = user;
             this.musicPlayerService = musicPlayerService;
+            this.musicPlayerService.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(MusicPlayerService.TrackLength))
+                {
+                    OnPropertyChanged(nameof(TrackLength));
+                }
+                if (args.PropertyName == nameof(MusicPlayerService.TrackPosition))
+                    OnPropertyChanged(nameof(TrackPosition));
 
-            // Load the playlists and songs
+                if (args.PropertyName == nameof(MusicPlayerService.IsPlayingText))
+                    OnPropertyChanged(nameof(IsPlayingText));
+            };
+
+
             Playlists = new ObservableCollection<Playlist>(User.GetPlaylistsForUser());
             Songs = new ObservableCollection<Song>(User.GetAllSongs());
         }
+
+
+        // Music Player Controls
+
+        public double TrackLength => musicPlayerService.TrackLength;
+
+        public double TrackPosition
+        {
+            get => musicPlayerService.TrackPosition;
+            set
+            {
+                musicPlayerService.Seek(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public double Volume
+        {
+            get => musicPlayerService.Volume;
+            set
+            {
+                musicPlayerService.Volume = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string IsPlayingText => musicPlayerService.IsPlayingText;
     }
 }

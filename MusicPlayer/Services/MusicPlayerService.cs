@@ -1,21 +1,51 @@
 ﻿using MusicPlayer.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace MusicPlayer.Services
 {
-    public class MusicPlayerService
+    public class MusicPlayerService : BaseService
     {
         private readonly MediaPlayer mediaPlayer;
-        private Song currentSong;
+        private readonly DispatcherTimer positionTimer;
+        public Song CurrentSong { get; private set; }
         public event Action SongEnded;
+        public event Action<double> OnTrackLengthUpdated;
 
-        public double TrackPosition => mediaPlayer.Position.TotalSeconds;
-        public double TrackLength => mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+        private double trackLength;
+        public double TrackLength
+        {
+            get => trackLength;
+            private set
+            {
+                if (trackLength != value)
+                {
+                    trackLength = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private double trackPosition;
+        public double TrackPosition
+        {
+            get => trackPosition;
+            private set
+            {
+                if (trackPosition != value)
+                {
+                    trackPosition = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         public double Volume
         {
@@ -23,41 +53,112 @@ namespace MusicPlayer.Services
             set => mediaPlayer.Volume = value / 100;
         }
 
+        private bool isPlaying;
+        private string isPlayingText;
+
+        public bool IsPlaying
+        {
+            get => isPlaying;
+            private set
+            {
+                if (isPlaying != value)
+                {
+                    isPlaying = value;
+                    OnPropertyChanged();
+                    IsPlayingText = isPlaying ? "Pause" : "Play";
+                }
+            }
+        }
+
+        public string IsPlayingText
+        {
+            get => isPlayingText;
+            private set
+            {
+                if (isPlayingText != value)
+                {
+                    isPlayingText = value;
+                    OnPropertyChanged(); 
+                }
+            }
+        }
+
         public MusicPlayerService()
         {
             mediaPlayer = new MediaPlayer();
-            mediaPlayer.MediaEnded += (sender, args) => SongEnded?.Invoke();
+            positionTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+            positionTimer.Tick += (sender, args) => TrackPosition = mediaPlayer.Position.TotalSeconds;
+            mediaPlayer.MediaEnded += (sender, args) =>
+            {
+                SongEnded?.Invoke();
+                TrackPosition = 0;
+                positionTimer.Stop();
+            };
+            mediaPlayer.MediaOpened += (sender, args) =>
+            {
+                if (mediaPlayer.NaturalDuration.HasTimeSpan)
+                {
+                    TrackLength = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                }
+            };
         }
 
-        public void Play(Song song)
+        public void ChooseSong(Song song)
         {
-            currentSong = song;
-            mediaPlayer.Open(new Uri(song.FilePath));
-            mediaPlayer.Play();
+            CurrentSong = song;
+            mediaPlayer.Open(new Uri(CurrentSong.FilePath));
+            TrackPosition = 0;
+        }
+
+        public void Play()
+        {
+            if (CurrentSong != null)
+            {
+                mediaPlayer.Play();
+                IsPlaying = true;
+                positionTimer.Start();
+            }
         }
 
         public void Pause()
         {
-            mediaPlayer.Pause();
+            if (CurrentSong != null)
+            {
+                mediaPlayer.Pause();
+                IsPlaying = false;
+                positionTimer.Stop();
+            }
         }
         public void TogglePlayPause()
         {
-            if (mediaPlayer.CanPause && mediaPlayer.Position.TotalSeconds < mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds)
+            if (CurrentSong != null)
             {
-                Pause();
-            }
-            else
-            {
-                Play(currentSong);
+                if (IsPlaying)
+                {
+                    Pause();
+                }
+                else
+                {
+                    Play();
+                }
             }
         }
+
         public void Stop()
         {
-            mediaPlayer.Stop();
+            if (CurrentSong != null)
+            {
+                mediaPlayer.Stop();
+                IsPlaying = false;
+                positionTimer.Stop();
+            }
         }
         public void Seek(double positionInSeconds)
         {
-            mediaPlayer.Position = TimeSpan.FromSeconds(positionInSeconds);
+            if (CurrentSong != null)
+            {
+                mediaPlayer.Position = TimeSpan.FromSeconds(positionInSeconds);
+            }
         }
 
     }

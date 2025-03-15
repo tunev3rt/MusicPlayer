@@ -25,7 +25,7 @@
             <ContentControl.ContentTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding PlaylistName}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding SelectedPlaylist.PlaylistName}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
                         <ListBox ItemsSource="{Binding SelectedPlaylistSongs}"
                          DisplayMemberPath="Title" 
                          SelectedItem="{Binding SelectedSongFromPlaylist}"/>
@@ -37,9 +37,15 @@
 
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="#222" VerticalAlignment="Bottom" Height="100">
-            <Button Content="{Binding PlayPauseButtonContent}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Width="75" Command="{Binding PlayPauseCommand}"/>
+            <Button Content="{Binding IsPlayingText}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Width="75" Command="{Binding PlayPauseCommand}" CommandParameter="{Binding}"/>
+            <TextBlock Text="{Binding TrackLength, StringFormat='{}{0:N0} sec'}"  HorizontalAlignment="Left" Margin="1228,41,0,-41" Foreground="White"/>
+            <TextBlock Text="{Binding TrackPosition, StringFormat=\{0:N0\} sec}"  HorizontalAlignment="Left" Margin="680,41,0,-41" Foreground="White"/>
+            <TextBlock Text="Currently Playing:"  HorizontalAlignment="Left" Margin="289,41,0,-41" Foreground="White"/>
+            <TextBlock Text="{Binding SelectedSongFromPlaylist.Title}"  HorizontalAlignment="Left" Margin="386,41,0,-41" Foreground="White"/>
 
-            <Slider Minimum="0" Maximum="{Binding TrackLength}" Value="{Binding TrackPosition}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500"/>
+            <Slider Value="{Binding TrackPosition, Mode=TwoWay}" 
+        Maximum="{Binding TrackLength}" 
+        IsSnapToTickEnabled="True" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500"/>
 
             <Slider Minimum="0" Maximum="100" Value="{Binding Volume}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200"/>
         </Grid>

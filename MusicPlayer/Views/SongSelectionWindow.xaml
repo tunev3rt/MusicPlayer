@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicPlayer.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Background="#FF1E1E1E">
     <UserControl.Resources>
         <!-- Style for the search bar -->
         <Style TargetType="TextBox">
@@ -63,7 +63,7 @@
 
         <TextBlock Text="Search Songs" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
         <!-- Song List -->
-        <ListBox Name="SongListBox" Grid.Row="1" Margin="10" Background="#f5f5f5" BorderBrush="#ccc" BorderThickness="1"  ItemsSource="{Binding Songs}" DisplayMemberPath="Title" SelectionMode="Single" ItemContainerStyle="{StaticResource SongListBoxItemStyle}" SelectedItem="{Binding SelectedSong, UpdateSourceTrigger=PropertyChanged}">
+        <ListBox Name="SongListBox" Grid.Row="1" Margin="10" Background="#FF1E1E1E" BorderBrush="#ccc" BorderThickness="1"  ItemsSource="{Binding Songs}" DisplayMemberPath="Title" SelectionMode="Single" ItemContainerStyle="{StaticResource SongListBoxItemStyle}" SelectedItem="{Binding SelectedSong, UpdateSourceTrigger=PropertyChanged}">
         </ListBox>
 
         <!-- Buttons at the Bottom -->

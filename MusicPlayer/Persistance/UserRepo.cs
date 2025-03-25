@@ -150,5 +150,25 @@ namespace MusicPlayer.Persistance
             }
         }
 
+        public void AddSong(Song song)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(
+                    "INSERT INTO Songs (Title, Artist, Album, Duration, FilePath) VALUES (@Title, @Artist, @Album, @Duration, @FilePath); SELECT SCOPE_IDENTITY();", con))
+                {
+                    cmd.Parameters.Add("@Title", SqlDbType.NVarChar).Value = song.Title;
+                    cmd.Parameters.Add("@Artist", SqlDbType.NVarChar).Value = song.Artist;
+                    cmd.Parameters.Add("@Album", SqlDbType.NVarChar).Value = song.Album;
+                    cmd.Parameters.Add("@Duration", SqlDbType.Int).Value = 0;
+                    cmd.Parameters.Add("@FilePath", SqlDbType.NVarChar).Value = song.FilePath;
+
+                    song.SongID = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+        }
+
+
     }
 }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using MusicPlayer.Model;
 using System.Windows.Input;
 using MusicPlayer.Commands;
+using MusicPlayer.Views;
 
 
 namespace MusicPlayer.ViewModels
@@ -29,6 +30,7 @@ namespace MusicPlayer.ViewModels
         public ICommand LogoutCommand { get; set; }
         public ICommand AddSongToPlaylistCommand { get; set; }
         public ICommand PlayPauseCommand { get; set; }
+        public ICommand AddSongCommand { get; set; }
 
         // Fields
 
@@ -116,6 +118,7 @@ namespace MusicPlayer.ViewModels
             AddPlaylistCommand = new AddPlaylistCommand(user);
             LogoutCommand = new LogoutCommand(navigationStore, this.musicPlayerService);
             AddSongToPlaylistCommand = new NavigateCommand(new NavigationService(navigationStore, () => new SongSelectionViewModel(navigationStore, user, SelectedPlaylist, musicPlayerService)), user);
+            AddSongCommand = new NavigateCommand(new NavigationService(navigationStore, () => new SongConfigurationViewModel(navigationStore, user, musicPlayerService)), user);
             PlayPauseCommand = new PlayPauseCommand(musicPlayerService);
         }
 

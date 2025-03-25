@@ -60,5 +60,10 @@ namespace MusicPlayer.Services
             _userRepo.AddSongToPlaylist(song, playlist);
         }
 
+        public void AddSong(Song song)
+        {
+            _userRepo.AddSong(song);
+        }
+
     }
 }

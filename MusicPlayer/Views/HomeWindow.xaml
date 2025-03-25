@@ -14,7 +14,7 @@
 
         <StackPanel Grid.Column="0" Background="#333">
             <TextBlock Text="Playlists" Foreground="White" FontSize="18" Margin="10,10,10,20"/>
-
+            <Button Content="Add songs to databaset" HorizontalAlignment="Stretch" VerticalAlignment="Top" Command="{Binding AddSongCommand}" CommandParameter="{Binding}" Margin="10" Background="#555" Foreground="White"/>
             <Button Content="Add Playlist" HorizontalAlignment="Stretch" VerticalAlignment="Top" Command="{Binding AddPlaylistCommand}" CommandParameter="{Binding}" Margin="10" Background="#555" Foreground="White"/>
 
             <ListBox ItemsSource="{Binding Playlists}" DisplayMemberPath="PlaylistName" Background="#444" Foreground="White" BorderBrush="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedPlaylist, Mode=TwoWay}">

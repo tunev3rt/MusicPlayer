@@ -20,6 +20,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:SongSelectionViewModel}">
                     <views:SongSelectionWindow />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:SongConfigurationViewModel}">
+                    <views:SongConfigurationWindow />
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 

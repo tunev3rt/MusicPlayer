@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -110,9 +111,17 @@ namespace MusicPlayer.Services
 
         public void ChooseSong(Song song)
         {
-            CurrentSong = song;
-            mediaPlayer.Open(new Uri(CurrentSong.FilePath));
-            TrackPosition = 0;
+            try
+            {
+                mediaPlayer.Open(new Uri(song.FilePath));
+                CurrentSong = song;
+                TrackPosition = 0;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"ERROR: {e.Message}");
+                CurrentSong = song;
+            }
         }
 
         public void Play()

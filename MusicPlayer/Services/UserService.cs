@@ -13,14 +13,14 @@ namespace MusicPlayer.Services
     public class UserService : INotifyPropertyChanged
     {
 
-        private UserRepo _userRepo;
+        private UserRepo userRepo;
 
-        public string Username { get {return _username; } set { OnPropertyChanged(nameof(Username)); _username = value; } }
-        private string _username;
+        public string Username { get {return username; } set { OnPropertyChanged(nameof(Username)); username = value; } }
+        private string username;
 
         public UserService()
         {
-            _userRepo = new UserRepo();
+            userRepo = new UserRepo();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -32,38 +32,41 @@ namespace MusicPlayer.Services
 
         public bool Register(string username, string password)
         {
-            return _userRepo.Register(username, password);
+            return userRepo.Register(username, password);
         }
 
         public List<Song> GetAllSongs()
         {
-            return _userRepo.GetAllSongs();
+            return userRepo.GetAllSongs();
         }
 
         public List<Playlist> GetPlaylistsForUser()
         {
-            return _userRepo.GetPlaylistsForUser(Username);
+            return userRepo.GetPlaylistsForUser(Username);
         }
 
         public void CreateNewPlaylist(Playlist playlist)
         {
-            _userRepo.CreatePlaylist(Username, playlist);
+            userRepo.CreatePlaylist(Username, playlist);
         }
         
         public List<Song> GetSongsFromPlaylist(Playlist playlist)
         {
-            return _userRepo.GetSongsFromPlaylist(playlist);
+            return userRepo.GetSongsFromPlaylist(playlist);
         }
 
         public void AddSongToPlaylist(Song song, Playlist playlist)
         {
-            _userRepo.AddSongToPlaylist(song, playlist);
+            userRepo.AddSongToPlaylist(song, playlist);
         }
 
         public void AddSong(Song song)
         {
-            _userRepo.AddSong(song);
+            userRepo.AddSong(song);
         }
-
+        public void DeletePlaylist(Playlist playlist)
+        {
+            userRepo.DeletePlaylist(playlist);
+        }
     }
 }

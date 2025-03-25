@@ -31,6 +31,7 @@ namespace MusicPlayer.ViewModels
         public ICommand AddSongToPlaylistCommand { get; set; }
         public ICommand PlayPauseCommand { get; set; }
         public ICommand AddSongCommand { get; set; }
+        public ICommand DeletePlaylistCommand { get; set; }
 
         // Fields
 
@@ -120,6 +121,7 @@ namespace MusicPlayer.ViewModels
             AddSongToPlaylistCommand = new NavigateCommand(new NavigationService(navigationStore, () => new SongSelectionViewModel(navigationStore, user, SelectedPlaylist, musicPlayerService)), user);
             AddSongCommand = new NavigateCommand(new NavigationService(navigationStore, () => new SongConfigurationViewModel(navigationStore, user, musicPlayerService)), user);
             PlayPauseCommand = new PlayPauseCommand(musicPlayerService);
+            DeletePlaylistCommand = new DeletePlaylistCommand(user);
         }
 
 

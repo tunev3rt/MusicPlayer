@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MusicPlayer.Model;
+using System.Diagnostics;
 
 namespace MusicPlayer.Commands
 {
@@ -30,8 +31,10 @@ namespace MusicPlayer.Commands
         {
             if (parameter is HomeViewModel hvm)
             {
-                Playlist newPlaylist = new Playlist();
-                newPlaylist.PlaylistName = "New Playlist";
+                Playlist newPlaylist = new Playlist
+                {
+                    PlaylistName = "New Playlist"
+                };
                 user.CreateNewPlaylist(newPlaylist);
                 hvm.Playlists.Add(newPlaylist);
             }

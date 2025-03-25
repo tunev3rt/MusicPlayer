@@ -16,16 +16,16 @@ namespace MusicPlayer.ViewModels
 
         public ICommand RegisterCommand { get; set; }
 
-        private readonly UserService _user;
+        private readonly UserService user;
 
         public string Username { get; set; }
         public string Password { get; set; }
 
         public LoginViewModel(NavigationStore navigationStore, UserService user)
         {
-            _user = user;
-            LoginCommand = new LoginCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, _user, new MusicPlayerService())), _user);
-            RegisterCommand = new RegisterCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, _user, new MusicPlayerService())), _user);
+            this.user = user;
+            LoginCommand = new LoginCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, this.user, new MusicPlayerService())), this.user);
+            RegisterCommand = new RegisterCommand(new NavigationService(navigationStore, () => new HomeViewModel(navigationStore, this.user, new MusicPlayerService())), this.user);
 
 
         }

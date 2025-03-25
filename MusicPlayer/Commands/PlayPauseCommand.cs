@@ -13,18 +13,18 @@ namespace MusicPlayer.Commands
     {
         private readonly MusicPlayerService musicPlayerService;
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         public PlayPauseCommand(MusicPlayerService musicPlayerService)
         {
             this.musicPlayerService = musicPlayerService;
         }
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return true;
         }
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             if (parameter is HomeViewModel hvm)
             {

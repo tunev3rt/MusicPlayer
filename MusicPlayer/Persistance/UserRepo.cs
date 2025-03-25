@@ -19,7 +19,6 @@ namespace MusicPlayer.Persistance
         {
             connectionString = DBConnectionManager.GetConnectionString();
         }
-
         public bool Register(string username, string password)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -34,7 +33,6 @@ namespace MusicPlayer.Persistance
                 }
             }
         }
-
         public List<Song> GetAllSongs()
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -91,13 +89,12 @@ namespace MusicPlayer.Persistance
                 }
             }
         }
-
         public void CreatePlaylist(string username, Playlist playlist)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO Playlists (PlaylistName, Username) VALUES (@PlaylistName, @Username)", con))
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO Playlists (PlaylistName, Username) VALUES (@PlaylistName, @Username); SELECT SCOPE_IDENTITY();", con))
                 {
                     cmd.Parameters.Add("@PlaylistName", SqlDbType.NVarChar).Value = playlist.PlaylistName;
                     cmd.Parameters.Add("@Username", SqlDbType.NVarChar).Value = username;
@@ -119,6 +116,7 @@ namespace MusicPlayer.Persistance
                 }
             }
         }
+
         public List<Song> GetSongsFromPlaylist(Playlist playlist)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -149,7 +147,6 @@ namespace MusicPlayer.Persistance
                 }
             }
         }
-
         public void AddSong(Song song)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -168,6 +165,41 @@ namespace MusicPlayer.Persistance
                 }
             }
         }
+        public void DeletePlaylist(Playlist playlist)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                using (SqlTransaction transaction = con.BeginTransaction())
+                {
+                    try
+                    {
+                        // Step 1: Delete related records in PlaylistSongs
+                        using (SqlCommand cmd = new SqlCommand("DELETE FROM PlaylistSongs WHERE PlaylistID = @PlaylistID", con, transaction))
+                        {
+                            cmd.Parameters.Add("@PlaylistID", SqlDbType.Int).Value = playlist.PlaylistID;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Step 2: Delete the playlist
+                        using (SqlCommand cmd = new SqlCommand("DELETE FROM Playlists WHERE PlaylistID = @PlaylistID", con, transaction))
+                        {
+                            cmd.Parameters.Add("@PlaylistID", SqlDbType.Int).Value = playlist.PlaylistID;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw new Exception("Error deleting playlist", ex);
+                    }
+                }
+            }
+        }
+
 
 
     }

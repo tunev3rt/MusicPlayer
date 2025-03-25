@@ -9,13 +9,13 @@ namespace MusicPlayer.Stores
 {
     public class NavigationStore
     {
-        private BaseViewModel _currentViewModel;
+        private BaseViewModel currentViewModel;
 
 
         public BaseViewModel CurrentViewModel
         {
-            get { return _currentViewModel; }
-            set { _currentViewModel = value; OnCurrentViewModelChanged(); }
+            get { return currentViewModel; }
+            set { currentViewModel = value; OnCurrentViewModelChanged(); }
         }
 
         public event Action CurrentViewModelChanged;

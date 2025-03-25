@@ -28,15 +28,15 @@ namespace MusicPlayer.ViewModels
 
         public Playlist SelectedPlaylist { get; set; }
 
-        private Song _selectedSong;
+        private Song selectedSong;
         public Song SelectedSong
         {
-            get => _selectedSong;
+            get => selectedSong;
             set
             {
-                if (_selectedSong != value)
+                if (selectedSong != value)
                 {
-                    _selectedSong = value;
+                    selectedSong = value;
                     OnPropertyChanged();
                 }
             }

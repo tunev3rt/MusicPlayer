@@ -32,7 +32,7 @@ namespace MusicPlayer.Commands
             this.user = user;
         }
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             bool canExecute = false;
             if (parameter is LoginViewModel lvm)
@@ -41,7 +41,7 @@ namespace MusicPlayer.Commands
             }
             return canExecute;
         }
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             if (parameter is LoginViewModel lvm)
             {
@@ -49,7 +49,6 @@ namespace MusicPlayer.Commands
                 if (LoggedIn)
                 {
                     user.Username = lvm.Username;
-                    Trace.WriteLine("User logged in");
                     navigationService.Navigate();
                 }
                 else

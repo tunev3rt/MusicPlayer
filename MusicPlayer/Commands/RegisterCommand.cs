@@ -52,7 +52,7 @@ namespace MusicPlayer.Commands
                 }
                 else
                 {
-                    MessageBox.Show("Login mislykkedes. Tryk på Registrer for at registrere din konto.");
+                    MessageBox.Show("Konto kan ikke registreres, muligvis findes der en konto med samme brugernavn.");
                 }
             }
         }

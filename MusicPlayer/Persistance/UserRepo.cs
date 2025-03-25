@@ -28,8 +28,15 @@ namespace MusicPlayer.Persistance
                 {
                     cmd.Parameters.Add("@Username", SqlDbType.NVarChar).Value = username;
                     cmd.Parameters.Add("@Passcode", SqlDbType.NVarChar).Value = password;
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected == 1;
+                    try
+                    {
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected == 1;
+                    }
+                    catch (SqlException ex)
+                    {
+                        return false;
+                    }
                 }
             }
         }
